@@ -10,7 +10,9 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private CoordinatorLayout coordinatorLayout;
     private RecyclerView recyclerView;
     private TextView noNotesView;
+    EditText etSearch;
 
     private DatabaseHelper db;
 
@@ -38,12 +41,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+       // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+       // setSupportActionBar(toolbar);
 
         coordinatorLayout = findViewById(R.id.coordinator_layout);
         recyclerView = findViewById(R.id.recycler_view);
         noNotesView = findViewById(R.id.empty_notes_view);
+        etSearch=(EditText)findViewById(R.id.etSearch);
 
         db = new DatabaseHelper(this);
 
@@ -82,6 +86,35 @@ public class MainActivity extends AppCompatActivity {
                 showActionsDialog(position);
             }
         }));
+
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,             int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                System.out.println(s.toString());
+                System.out.println(count);
+                if(count>0){
+                   contactsList.clear();
+                   contactsList.addAll(db.getSearchedContacts(s.toString()));
+                   mAdapter.notifyDataSetChanged();
+                }else{
+                    contactsList.clear();
+                    contactsList.addAll(db.getAllContacts());
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+
+
+        });
     }
 
     /**

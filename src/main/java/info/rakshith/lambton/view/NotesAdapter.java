@@ -53,13 +53,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Contact note = notesList.get(position);
 
-        holder.note.setText(note.getLastName());
+        holder.note.setText(note.getFirstName());
 
         // Displaying dot from HTML character code
         holder.dot.setText(Html.fromHtml("&#8226;"));
 
         // Formatting and displaying timestamp
-        holder.timestamp.setText(note.getFirstName());
+        holder.timestamp.setText(note.getLastName());
     }
 
     @Override

@@ -123,6 +123,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return contacts;
     }
 
+    public  List<Contact> getSearchedContacts(String searchedCharacter){
+        List<Contact> contacts = new ArrayList<>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + Contact.TABLE_NAME + " WHERE "+Contact.COLUMN_FIRST_NAME+ " LIKE '%"+searchedCharacter+"%' ORDER BY " +
+                Contact.COLUMN_ID + " DESC";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Contact contact = new Contact();
+                contact.setId(cursor.getInt(cursor.getColumnIndex(Contact.COLUMN_ID)));
+                contact.setFirstName(cursor.getString(cursor.getColumnIndex(Contact.COLUMN_FIRST_NAME)));
+                contact.setLastName(cursor.getString(cursor.getColumnIndex(Contact.COLUMN_LAST_NAME)));
+                contact.setEmail(cursor.getString(cursor.getColumnIndex(Contact.COLUMN_EMAIL)));
+                contact.setPhoneNumber(cursor.getString(cursor.getColumnIndex(Contact.COLUMN_PHONE_NUMBER)));
+                contacts.add(contact);
+            } while (cursor.moveToNext());
+        }
+
+        // close db connection
+        db.close();
+
+        // return notes list
+        return contacts;
+    }
+
     public int getContactsCount() {
         String countQuery = "SELECT  * FROM " + Contact.TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
