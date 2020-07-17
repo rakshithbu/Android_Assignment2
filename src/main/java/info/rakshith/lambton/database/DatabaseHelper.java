@@ -54,6 +54,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(Contact.COLUMN_PHONE_NUMBER, contact.getPhoneNumber());
         values.put(Contact.COLUMN_ADDRESS, contact.getAddress());
 
+        System.out.println();
         // insert row
         long id = db.insert(Contact.TABLE_NAME, null, values);
 
@@ -112,6 +113,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 contact.setLastName(cursor.getString(cursor.getColumnIndex(Contact.COLUMN_LAST_NAME)));
                 contact.setEmail(cursor.getString(cursor.getColumnIndex(Contact.COLUMN_EMAIL)));
                 contact.setPhoneNumber(cursor.getString(cursor.getColumnIndex(Contact.COLUMN_PHONE_NUMBER)));
+                contact.setAddress(cursor.getString(cursor.getColumnIndex(Contact.COLUMN_ADDRESS)));
                 contacts.add(contact);
             } while (cursor.moveToNext());
         }
